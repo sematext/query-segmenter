@@ -1,0 +1,6 @@
+Lucene
+Solr
+Mahout
+Nutch
+ManifoldCF
+Tika
