@@ -4,7 +4,20 @@ The `QuerySegmenter` core library is used to find typed segments within a user q
 
 ## Contents
 
-
+- [Solr Version](#solr-version)
+- [Build](#build)
+- [Release Notes](#release-notes)
+- [Core Library](#core-library)
+  - [API](#api)
+  - [Segment Dictionary](#segment-dictionary)
+- [Solr Integration](#solr-integration)
+  - [Deployment Library Files](#deployment-library-files)
+  - [QuerySegmenteQParser](#querysegmenteqparser)
+  - [QuerySegmenterComponent](#querysegmentercomponent)
+  - [CentroidComponent](#centroidcomponent)
+- [License](#license)
+- [Contact](#contact)
+  
 ## Solr Version
 6.0.1
 
@@ -116,15 +129,15 @@ Note that this dictionary does a case-insensitive match. If the user query conta
 ## Solr Integration
 The `QuerySegmenter` Solr library includes Solr components that use the `QueryComponent` core library. It currently contains 2 components: `QuerySegmenterQParser` and `CentroidComponent`.
 
-### Deployment library files. 
+### Deployment Library Files. 
 Copy the `QuerySegmenter` Solr library jar files (`st-QuerySegmenter-core-x.y.z.jar` and `st-QuerySegmenter-solr-x.y.z.jar`) into the `lib` folder of your Solr core (as defined in `solr.xml` file).
 
-#### QuerySegmenteQParser
+### QuerySegmenteQParser
 This `QParser` is used to retrieve segments from a user query. Any dictionary can be used.
 
 If there is a segment in the user query that matches an element of the dictionary, the query is rewritten using either the label or the location (only for the area segment dictionary). For example, for the query *“pizza brooklyn”*, if *“new  york”* is an area, the query will be rewritten to *“pizza neighborhood:brooklyn”* or *“pizza location:[minlat,minlon TO maxlat, maxlon]”*. The field to use and whether we should use the label or the location is configurable.
 
-##### Configuration
+#### Configuration
 The `QuerySegmenterQParser` needs to be configured in the `solrconfig.xml` file. Here is an example:
 
 ```xml
@@ -161,7 +174,7 @@ It is also possible to use the `QParser` within a request handler. Here is an ex
 </requestHandler>
 ```
 
-##### Usage
+#### Usage
 To use the `QParser` directly, use LocalParams syntax:
 
 ```
@@ -182,11 +195,11 @@ To use with the request handler defined in the previous section, use parameter d
 http://localhost:8080/solr/company/segmenter/?qq=pizza+new+york
 ```
 
-#### QuerySegmenterComponent
+### QuerySegmenterComponent
 
 A component that works like the `QParser` described above, but implemented as a Solr `SearchComponent` instead of a `QParser`. A SearchComponent must be used with a Solr `RequestHandler`. This specific component must be used before the standard query component (or simply defined to be the first component), because it needs to rewrite the query before the query is made against Solr. 
 
-##### Configuration
+#### Configuration
 Here is an example configuration (in `solrconfig.xml`):
 
 ```xml
@@ -225,7 +238,7 @@ Here is an example configuration (in `solrconfig.xml`):
 </requestHandler>
 ```
 
-##### Usage
+#### Usage
 It can be used like this:
 
 ```
@@ -235,13 +248,13 @@ http://localhost:8080/solr/test/qs?q=solr
 For example, if *“solr”* is in the dictionary of projects (i.e. in the `projects.txt` file), the query will be rewritten to *“project:solr”*.
 
 
-#### CentroidComponent
+### CentroidComponent
 
 This `SearchComponent` is used to alter the user location if a segment of the query is a centroid. It must be used within a `RequestHandler` that uses a location filter (`bbox` or `geofilt`). If a match is found, the user location (`pt` request param, which is required) is changed to the center location of the centroid. The effect will be that instead of using the user location for the location filter, it will use the centroid location. If multiple centroid segments are returned from the user query, the closest centroid to the original user location is used.
 
 For example, if a user searches for *“pizza Aaronsburg”*, the segment *“Aaronsburg”* could be returned as a centroid with location 40.9068, -77.4081. This location would be used instead of the original location. This would filter the results to keep only the documents around the centroid location.
 
-##### Configuration
+#### Configuration
 
 First, we need to define the SearchComponent (in `solrconfig.xml`) :
 
@@ -278,7 +291,7 @@ Also note that `bbox` could have been used instead of `geofilt`.
 
 Another thing to note is usage of *<str name="q.alt">*:*</str>* - with `CentroidComponent`, it is possible original user’s query will be transformed into empty string. To handle such cases, you should define `q.alt` which will be used by Solr instead. In this case, we used match-all query (which is typically used in similar cases).
 
-##### Usage
+#### Usage
 
 To use it with the request handler defined in the last section:
 
