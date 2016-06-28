@@ -17,7 +17,7 @@ $ mvn clean package
 
 ## Release Notes
 
-#### 1.3.6.0.1 (27-06-2016)
+#### 1.3.6.0.1 (2016-06-27)
 - Support for Solr 6.0.1
 
 ## Core Library
