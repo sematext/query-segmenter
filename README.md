@@ -307,4 +307,4 @@ QuerySegmenter is released under Apache License, Version 2.0
 
 ## Contact
 
-For any questions ping @sematext, @nmtien.
+For any questions ping [@sematext](http://www.twitter.com/sematext)
