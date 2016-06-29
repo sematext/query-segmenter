@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sematext/query-segmenter.svg?branch=master)](https://travis-ci.org/sematext/query-segmenter)
+
 # Query Segmenter
 
 The `QuerySegmenter` core library is used to find typed segments within a user query. For example, for the query *“Pizza New York”*, the segment *“New York”* can be extracted as a segment of type *“city”*. The typed segments are matched against a dictionary, which is usually a text file.
