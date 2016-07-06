@@ -134,7 +134,7 @@ The `QuerySegmenter` Solr library includes Solr components that use the `QueryCo
 ### Deployment Library Files. 
 Copy the `QuerySegmenter` Solr library jar files (`st-QuerySegmenter-core-x.y.z.jar` and `st-QuerySegmenter-solr-x.y.z.jar`) into the `lib` folder of your Solr core (as defined in `solr.xml` file).
 
-### QuerySegmenteQParser
+### QuerySegmenterQParser
 This `QParser` is used to retrieve segments from a user query. Any dictionary can be used.
 
 If there is a segment in the user query that matches an element of the dictionary, the query is rewritten using either the label or the location (only for the area segment dictionary). For example, for the query *“pizza brooklyn”*, if *“new  york”* is an area, the query will be rewritten to *“pizza neighborhood:brooklyn”* or *“pizza location:[minlat,minlon TO maxlat, maxlon]”*. The field to use and whether we should use the label or the location is configurable.
@@ -149,13 +149,13 @@ The `QuerySegmenterQParser` needs to be configured in the `solrconfig.xml` file.
     <lst name="neighborhood">
       <str name="field">location</str>
       <str name="dictionary">com.sematext.querysegmenter.geolocation.AreaSegmentDictionaryMemImpl</str>
-      <str name="filename">solr/${solr.core.instanceDir}/conf/segmenter/neighborhood.txt</str>
+      <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/neighborhood.txt</str>
       <bool name="useLatLon">true</bool>
     </lst>
     <lst name="authors">
   <str name="field">author</str>
   <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
-  <str name="filename">${solr.home}/${solr.core.instanceDir}/conf/segmenter/authors.txt</str>
+  <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/authors.txt</str>
   <bool name="useLatLon">false</bool>
     </lst>
   </lst>
@@ -211,19 +211,19 @@ Here is an example configuration (in `solrconfig.xml`):
     <lst name="authors">
       <str name="field">author</str>
       <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
-      <str name="filename">./solr/conf/segmenter/authors.txt</str>
+      <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/authors.txt</str>
       <bool name="useLatLon">false</bool>
     </lst>
     <lst name="types">
       <str name="field">type</str>
       <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
-      <str name="filename">./solr/conf/segmenter/types.txt</str>
+      <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/types.txt</str>
       <bool name="useLatLon">false</bool>
     </lst>
     <lst name="projects">
       <str name="field">project</str>
       <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
-      <str name="filename">./solr/conf/segmenter/projects.txt</str>
+      <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/projects.txt</str>
       <bool name="useLatLon">false</bool>
     </lst>
   </lst>
@@ -263,7 +263,7 @@ First, we need to define the SearchComponent (in `solrconfig.xml`) :
 ```xml
 <searchComponent name="centroidcomp"
    class="com.sematext.querysegmenter.solr.CentroidComponent">
-  <str name="filename">solr/${solr.core.instanceDir}/conf/segmenter/centroid.csv</str>
+  <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/centroid.csv</str>
   <str name="separator">|</str>
 </searchComponent>
 ```
