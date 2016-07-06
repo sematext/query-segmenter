@@ -14,7 +14,7 @@ The `QuerySegmenter` core library is used to find typed segments within a user q
   - [Segment Dictionary](#segment-dictionary)
 - [Solr Integration](#solr-integration)
   - [Deployment Library Files](#deployment-library-files)
-  - [QuerySegmenteQParser](#querysegmenteqparser)
+  - [QuerySegmenterQParser](#querysegmenterqparser)
   - [QuerySegmenterComponent](#querysegmentercomponent)
   - [CentroidComponent](#centroidcomponent)
 - [License](#license)
