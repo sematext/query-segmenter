@@ -30,7 +30,8 @@
   </licenses>
   
   <scm>
-    <developerConnection>scm:svn:svn://svn.sematext.com/sematext_ext/st-QuerySegmenter/trunk</developerConnection>
+    <connection>scm:git:git@github.com:sematext/query-segmenter.git</connection>
+    <developerConnection>scm:git:git@github.com:sematext/query-segmenter.git</developerConnection>
   </scm>
 
   <organization>
@@ -143,6 +144,10 @@
   </dependencies>
 
   <distributionManagement>
+    <repository>
+      <id>oss</id>
+      <url>https://oss.sonatype.org/content/repositories/releases</url>
+    </repository>
     <snapshotRepository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
