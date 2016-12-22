@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sematext.querysegmenter</groupId>
@@ -21,7 +22,7 @@
     <module>core</module>
     <module>solr</module>
   </modules>
-  
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -29,7 +30,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <scm>
     <connection>scm:git:git@github.com:sematext/query-segmenter.git</connection>
     <developerConnection>scm:git:git@github.com:sematext/query-segmenter.git</developerConnection>
@@ -41,7 +42,7 @@
     <name>Sematext</name>
     <url>http://sematext.com</url>
   </organization>
-  
+
   <developers>
     <developer>
       <id>nmtien</id>
@@ -50,7 +51,7 @@
       <organization>Sematext</organization>
     </developer>
   </developers>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -113,6 +114,20 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -145,7 +160,7 @@
       </build>
     </profile>
   </profiles>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
