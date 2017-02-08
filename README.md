@@ -140,7 +140,7 @@ Copy the `QuerySegmenter` Solr library jar files (`st-QuerySegmenter-core-x.y.z.
 ### QuerySegmenterQParser
 This `QParser` is used to retrieve segments from a user query. Any dictionary can be used.
 
-If there is a segment in the user query that matches an element of the dictionary, the query is rewritten using either the label or the location (only for the area segment dictionary). For example, for the query *“pizza brooklyn”*, if *“new  york”* is an area, the query will be rewritten to *“pizza neighborhood:brooklyn”* or *“pizza location:[minlat,minlon TO maxlat, maxlon]”*. The field to use and whether we should use the label or the location is configurable.
+If there is a segment in the user query that matches an element of the dictionary, the query is rewritten using either the label or the location (only for the area segment dictionary). For example, for the query *“pizza brooklyn”*, if *“brooklyn”* is an area, the query will be rewritten to *“pizza neighborhood:brooklyn”* or *“pizza location:[minlat,minlon TO maxlat, maxlon]”*. The field to use and whether we should use the label or the location is configurable.
 
 #### Configuration
 The `QuerySegmenterQParser` needs to be configured in the `solrconfig.xml` file. Here is an example:
