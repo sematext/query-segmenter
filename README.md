@@ -156,10 +156,10 @@ The `QuerySegmenterQParser` needs to be configured in the `solrconfig.xml` file.
       <bool name="useLatLon">true</bool>
     </lst>
     <lst name="authors">
-  <str name="field">author</str>
-  <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
-  <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/authors.txt</str>
-  <bool name="useLatLon">false</bool>
+      <str name="field">author</str>
+      <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
+      <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/authors.txt</str>
+      <bool name="useLatLon">false</bool>
     </lst>
   </lst>
 </queryParser>
