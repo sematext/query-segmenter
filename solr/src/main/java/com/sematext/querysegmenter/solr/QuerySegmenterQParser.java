@@ -60,7 +60,11 @@ public class QuerySegmenterQParser extends QParser {
     for (TypedSegment typedSegment : typedSegments) {
       FieldMapping mapping = mappings.get(typedSegment.getDictionaryName());
       String value = QuerySegmenterComponent.getValue(typedSegment, mapping);
-      qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      if (mapping.useBoostQuery) {
+        qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("&bq=%s:%s", mapping.field, value));
+      } else {
+        qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      }
     }
 
     // Passing null allows to use another qparser defined with defType (like edismax)

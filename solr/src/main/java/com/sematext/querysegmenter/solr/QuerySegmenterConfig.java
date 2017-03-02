@@ -23,6 +23,7 @@ public class QuerySegmenterConfig {
   private static final String INIT_ATTR_FILENAME = "filename";
   private static final String INIT_ATTR_FIELD = "field";
   private static final String INIT_ATTR_LATLON = "useLatLon";
+  private static final String INIT_ATTR_BQ = "useBoostQuery";
 
   private final QuerySegmenterDefaultImpl segmenter;
 
@@ -31,6 +32,8 @@ public class QuerySegmenterConfig {
     String field;
 
     boolean useLatLon;
+
+    boolean useBoostQuery;
 
   }
 
@@ -72,6 +75,7 @@ public class QuerySegmenterConfig {
     FieldMapping mapping = new FieldMapping();
     mapping.field = (String) values.get(INIT_ATTR_FIELD);
     mapping.useLatLon = (Boolean) values.get(INIT_ATTR_LATLON);
+    mapping.useBoostQuery = values.get(INIT_ATTR_BQ) == null ? false : (Boolean) values.get(INIT_ATTR_BQ);
     mappings.put(name, mapping);
   }
 

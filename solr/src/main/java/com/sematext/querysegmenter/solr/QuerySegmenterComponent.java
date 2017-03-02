@@ -75,7 +75,11 @@ public class QuerySegmenterComponent extends SearchComponent {
     for (TypedSegment typedSegment : typedSegments) {
       FieldMapping mapping = config.getMappings().get(typedSegment.getDictionaryName());
       String value = getValue(typedSegment, mapping);
-      q = q.replaceAll(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      if (mapping.useBoostQuery) {
+        q = q.replaceAll(typedSegment.getSegment(), String.format("&bq=%s:%s", mapping.field, value));
+      } else {
+        q = q.replaceAll(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      }
     }
 
     if (typedSegments.isEmpty()) {
