@@ -103,7 +103,7 @@ public class QuerySegmenterQParserTest extends AbstractSolrTestCase {
   }
 
   /**
-   * The query "John Smith Jr" should be rewritten to "John Smith &bq=suffix:Jr"
+   * The query "John Jr Smith" should be rewritten to "John Smith&bq=suffix:Jr"
    * The response should show three docs name contains John or Smith and the id=11 suffix=Jr will be the first doc as it has higher relevancy
    */
   @Test
@@ -111,7 +111,7 @@ public class QuerySegmenterQParserTest extends AbstractSolrTestCase {
 
     ModifiableSolrParams params = new ModifiableSolrParams();
     params.add(CommonParams.QT, DISMAX_BQ_QPARSER);
-    params.add("qq", "John Smith Jr");
+    params.add("qq", "John Jr Smith");
 
     SolrQueryRequest req = request(params, DISMAX_BQ_QPARSER);
 

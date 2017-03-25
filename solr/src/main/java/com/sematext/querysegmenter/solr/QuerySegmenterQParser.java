@@ -61,7 +61,7 @@ public class QuerySegmenterQParser extends QParser {
       FieldMapping mapping = mappings.get(typedSegment.getDictionaryName());
       String value = QuerySegmenterComponent.getValue(typedSegment, mapping);
       if (mapping.useBoostQuery) {
-        qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("&bq=%s:%s", mapping.field, value));
+        qstr = qstr.replaceFirst(typedSegment.getSegment(), "").concat(String.format("&bq=%s:%s", mapping.field, value));
       } else {
         qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
       }
