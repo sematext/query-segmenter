@@ -22,7 +22,7 @@ public interface SegmentDictionary {
   /**
    * Ask this SegmentDictionary to return a TypedSegment if there is one that matches the segment provided
    * 
-   * @param segment
+   * @param segment .
    * @return TypedSegment
    */
   List<? extends TypedSegment> lookup(String segment);

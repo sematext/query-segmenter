@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public abstract class FileBasedSegmentDictionary extends AbstractSegmentDictionary {
 
-  protected static final String DEFAULT_SEPARATOR = ",";
+  private static final String DEFAULT_SEPARATOR = ",";
 
   protected String separator = DEFAULT_SEPARATOR;
 

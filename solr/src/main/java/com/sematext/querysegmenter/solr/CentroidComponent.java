@@ -91,7 +91,7 @@ public class CentroidComponent extends SearchComponent {
     }
 
     // If multiple matches, use the closest from the user
-    CentroidTypedSegment centroidSegment = null;
+    CentroidTypedSegment centroidSegment;
     if (typedSegments.size() > 1) {
       double[] userLatlon = getUserLocation(params);
       centroidSegment = getClosestSegment(typedSegments, userLatlon);
