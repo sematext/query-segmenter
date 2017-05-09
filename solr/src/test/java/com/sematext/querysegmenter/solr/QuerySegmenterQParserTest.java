@@ -24,6 +24,7 @@ import org.junit.Test;
 public class QuerySegmenterQParserTest extends AbstractSolrTestCase {
 
   private static final String DISMAX_QPARSER = "dismax_qparser";
+  private static final String DISMAX_BQ_QPARSER = "dismax_bq_qparser";
 
   @Override
   public void setUp() throws Exception {
@@ -33,6 +34,11 @@ public class QuerySegmenterQParserTest extends AbstractSolrTestCase {
     assertU(adoc("id", "2", "project", "Tika", "type", "wiki", "title", "Solr can be used with Tika"));
     assertU(adoc("id", "3", "project", "Lucene", "type", "wiki", "title", "Locations are fun!", "location", "45.5,-93.5"));
     assertU(adoc("id", "4", "city", "new york"));
+
+    assertU(adoc("id", "11", "name", "John Smith", "suffix", "Jr", "title", "Solr is great!"));
+    assertU(adoc("id", "13", "name", "John Smith", "suffix", "Sr", "title", "Solr can be used with Tika"));
+    assertU(adoc("id", "12", "name", "Jon Doe", "suffix", "Jr"));
+    assertU(adoc("id", "14", "name", "John Doe"));
 
     assertU("commit", commit());
   }
@@ -96,9 +102,31 @@ public class QuerySegmenterQParserTest extends AbstractSolrTestCase {
         "//result[@name='response']/doc[1]/str[@name='id'][.='4']");
   }
 
+  /**
+   * The query "John Jr Smith" should be rewritten to "John Smith&bq=suffix:Jr"
+   * The response should show three docs name contains John or Smith and the id=11 suffix=Jr will be the first doc as it has higher relevancy
+   */
+  @Test
+  public void test_bq_with_request_handler() {
+
+    ModifiableSolrParams params = new ModifiableSolrParams();
+    params.add(CommonParams.QT, DISMAX_BQ_QPARSER);
+    params.add("qq", "John Jr Smith");
+
+    SolrQueryRequest req = request(params, DISMAX_BQ_QPARSER);
+
+    assertQ(req, "//result[@name='response'][@numFound='3']",
+            "//result[@name='response']/doc[1]/str[@name='id'][.='11']",
+            "//result[@name='response']/doc[2]/str[@name='id'][.='13']");
+  }
+
   private SolrQueryRequest request(ModifiableSolrParams params) {
+    return request(params, DISMAX_QPARSER);
+  }
+
+  private SolrQueryRequest request(ModifiableSolrParams params, String handlerName) {
     SolrCore core = h.getCore();
-    SolrRequestHandler handler = core.getRequestHandler(DISMAX_QPARSER);
+    SolrRequestHandler handler = core.getRequestHandler(handlerName);
 
     SolrQueryResponse rsp = new SolrQueryResponse();
     NamedList<Object> list = new NamedList<Object>();

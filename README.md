@@ -232,6 +232,13 @@ Here is an example configuration (in `solrconfig.xml`):
       <str name="filename">${solr.solr.home}/${solr.core.name}/conf/segmenter/projects.txt</str>
       <bool name="useLatLon">false</bool>
     </lst>
+    <lst name="suffix">
+      <str name="field">suffix</str>
+      <str name="dictionary">com.sematext.querysegmenter.SynonymSegmentDictionaryMemImpl</str>
+      <str name="filename">./solr/collection1/conf/segmenter/suffix.txt</str>
+      <bool name="useLatLon">false</bool>
+      <bool name="useBoostQuery">true</bool>
+    </lst>
   </lst>
 </searchComponent>
   
@@ -255,6 +262,9 @@ http://localhost:8080/solr/test/qs?q=solr
 
 For example, if *“solr”* is in the dictionary of projects (i.e. in the `projects.txt` file), the query will be rewritten to *“project:solr”*.
 
+Add a feature to support using boost query instead of filter. One of the use case is when searching person's name with suffix, the default behavior is to expect the name with suffix match to be boosted with higher relevancy instead of only showing the suffix matches.
+
+For example, if searching for *"John Smith Jr"*, when ```useBoostQuery``` is set to true in the segmenter configuration, the query will be rewritten to ```bq=suffix:Jr```.
 
 ### CentroidComponent
 

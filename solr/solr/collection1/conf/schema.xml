@@ -106,6 +106,9 @@
    <field name="type_level2" type="string" indexed="true" stored="true"/>
    <field name="project" type="string" indexed="true" stored="true"/>
    <field name="city" type="string" indexed="true" stored="true"/>
+   <field name="name" type="text_en" indexed="true" stored="true"/>
+   <field name="suffix" type="string" indexed="true" stored="true"/>
+
    <!--secondary project name-->
    <field name="project_sec" type="string" indexed="true" stored="true"/>
    <!-- signature field, used for deduplication -->

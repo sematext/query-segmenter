@@ -8,12 +8,18 @@
  */
 package com.sematext.querysegmenter.solr;
 
+import org.apache.lucene.queries.function.BoostedQuery;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.Query;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.search.QParser;
 import org.apache.solr.search.SyntaxError;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,15 +63,29 @@ public class QuerySegmenterQParser extends QParser {
     String qstr = getString();
 
     List<TypedSegment> typedSegments = segmenter.segment(qstr);
+    List<Query> boostQueries = new ArrayList<>();
+
     for (TypedSegment typedSegment : typedSegments) {
       FieldMapping mapping = mappings.get(typedSegment.getDictionaryName());
       String value = QuerySegmenterComponent.getValue(typedSegment, mapping);
-      qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      if (mapping.useBoostQuery) {
+        qstr = qstr.replaceFirst(typedSegment.getSegment(), "");
+        String qs = String.format("%s:%s", mapping.field, value);
+        boostQueries.add(subQuery(qs, null).getQuery());
+      } else {
+        qstr = qstr.replaceFirst(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      }
     }
 
     // Passing null allows to use another qparser defined with defType (like edismax)
     // See SOLR-2972
     QParser parser = subQuery(qstr, null);
-    return parser.parse();
+    BooleanQuery.Builder query = new BooleanQuery.Builder();
+    query.add(parser.parse(), BooleanClause.Occur.MUST);
+
+    for(Query bq:boostQueries) {
+      query.add(bq, BooleanClause.Occur.SHOULD);
+    }
+    return query.build();
   }
 }

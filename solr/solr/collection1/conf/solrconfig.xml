@@ -1514,13 +1514,20 @@
           <str name="dictionary">com.sematext.querysegmenter.geolocation.AreaSegmentDictionaryMemImpl</str>
           <str name="filename">./solr/collection1/conf/segmenter/neighborhood.txt</str>
           <bool name="useLatLon">true</bool>
-       </lst>
+      </lst>
       <lst name="city">
           <str name="field">city</str>
           <str name="dictionary">com.sematext.querysegmenter.GenericSegmentDictionaryMemImpl</str>
           <str name="filename">./solr/collection1/conf/segmenter/city.txt</str>
           <bool name="useLatLon">false</bool>
-       </lst>
+      </lst>
+      <lst name="suffix">
+        <str name="field">suffix</str>
+        <str name="dictionary">com.sematext.querysegmenter.SynonymSegmentDictionaryMemImpl</str>
+        <str name="filename">./solr/collection1/conf/segmenter/suffix.txt</str>
+        <bool name="useLatLon">false</bool>
+        <bool name="useBoostQuery">true</bool>
+      </lst>
     </lst>
   </searchComponent>
   
@@ -1534,7 +1541,18 @@
           <str>segmenter</str>
       </arr>
   </requestHandler>
-  
+
+  <requestHandler name="dismax_qs_bq" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="defType">edismax</str>
+      <str name="qf">name</str>
+      <!-- Other dismax params... -->
+    </lst>
+    <arr name="first-components">
+      <str>segmenter</str>
+    </arr>
+  </requestHandler>
+
   <queryParser name="segmenter_qparser"
     class="com.sematext.querysegmenter.solr.QuerySegmenterQParserPlugin">
     <lst name="segments">
@@ -1561,16 +1579,31 @@
           <str name="dictionary">com.sematext.querysegmenter.geolocation.AreaSegmentDictionaryMemImpl</str>
           <str name="filename">./solr/collection1/conf/segmenter/neighborhood.txt</str>
           <bool name="useLatLon">true</bool>
-       </lst>
+      </lst>
       <lst name="city">
           <str name="field">city</str>
           <str name="dictionary">com.sematext.querysegmenter.SynonymSegmentDictionaryMemImpl</str>
           <str name="filename">./solr/collection1/conf/segmenter/city.txt</str>
           <bool name="useLatLon">false</bool>
-       </lst>
+      </lst>
+      <lst name="suffix">
+        <str name="field">suffix</str>
+        <str name="dictionary">com.sematext.querysegmenter.SynonymSegmentDictionaryMemImpl</str>
+        <str name="filename">./solr/collection1/conf/segmenter/suffix.txt</str>
+        <bool name="useLatLon">false</bool>
+        <bool name="useBoostQuery">true</bool>
+      </lst>
     </lst>
   </queryParser>
   
+  <requestHandler name="dismax_bq_qparser" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="q">{!segmenter_qparser defType=edismax v=$qq}</str>
+      <str name="qf">name</str>
+    </lst>
+  </requestHandler>
+
   <requestHandler name="dismax_qparser" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="echoParams">explicit</str>
@@ -1578,7 +1611,7 @@
       <str name="qf">title</str>
     </lst>
   </requestHandler>
-  
+
   <searchComponent name="centroidcomp"
      class="com.sematext.querysegmenter.solr.CentroidComponent">
     <str name="filename">./solr/collection1/conf/segmenter/centroid.csv</str>

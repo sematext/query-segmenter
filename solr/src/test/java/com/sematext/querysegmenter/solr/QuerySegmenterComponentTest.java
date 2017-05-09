@@ -33,6 +33,11 @@ public class QuerySegmenterComponentTest extends AbstractSolrTestCase {
     assertU(adoc("id", "2", "project", "Tika", "type", "wiki", "title", "Solr can be used with Tika"));
     assertU(adoc("id", "3", "project", "Lucene", "type", "wiki", "title", "Locations are fun!", "location", "45.5,-93.5"));
 
+    assertU(adoc("id", "11", "name", "John Smith", "suffix", "Jr", "title", "Solr is great!"));
+    assertU(adoc("id", "13", "name", "John Smith", "suffix", "Sr", "title", "Solr can be used with Tika"));
+    assertU(adoc("id", "12", "name", "Jon Doe", "suffix", "Jr"));
+    assertU(adoc("id", "14", "name", "John Doe"));
+
     assertU("commit", commit());
   }
 
@@ -69,9 +74,31 @@ public class QuerySegmenterComponentTest extends AbstractSolrTestCase {
         "//result[@name='response']/doc[1]/str[@name='id'][.='3']");
   }
 
+  /**
+   * The query "John Smith Jr" should be rewritten to "John Smith &bq=suffix:Jr"
+   * The response should show three docs name contains John or Smith and the id=11 suffix=Jr will be the first doc as it has higher relevancy
+   */
+  @Test
+  public void test_bq_with_component() {
+
+    ModifiableSolrParams params = new ModifiableSolrParams();
+    params.add(CommonParams.QT, "dismax_qs_bq");
+    params.add(CommonParams.Q, "John Smith Jr");
+
+    SolrQueryRequest req = request(params, "dismax_qs_bq");
+
+    assertQ(req, "//result[@name='response'][@numFound='3']",
+            "//result[@name='response']/doc[1]/str[@name='id'][.='11']",
+            "//result[@name='response']/doc[2]/str[@name='id'][.='13']");
+  }
+
   private SolrQueryRequest request(ModifiableSolrParams params) {
+    return request(params, DISMAX_QS);
+  }
+
+  private SolrQueryRequest request(ModifiableSolrParams params, String handlerName) {
     SolrCore core = h.getCore();
-    SolrRequestHandler handler = core.getRequestHandler(DISMAX_QS);
+    SolrRequestHandler handler = core.getRequestHandler(handlerName);
 
     SolrQueryResponse rsp = new SolrQueryResponse();
     NamedList<Object> list = new NamedList<Object>();

@@ -9,6 +9,7 @@
 package com.sematext.querysegmenter.solr;
 
 import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
@@ -65,6 +66,7 @@ public class QuerySegmenterComponent extends SearchComponent {
 
     SolrParams params = rb.req.getParams();
     String q = params.get(CommonParams.Q);
+    String bq = null;
 
     if (q == null || q.isEmpty()) {
       return;
@@ -75,7 +77,12 @@ public class QuerySegmenterComponent extends SearchComponent {
     for (TypedSegment typedSegment : typedSegments) {
       FieldMapping mapping = config.getMappings().get(typedSegment.getDictionaryName());
       String value = getValue(typedSegment, mapping);
-      q = q.replaceAll(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      if (mapping.useBoostQuery) {
+        q = q.replaceAll(typedSegment.getSegment(), "");
+        bq = String.format("%s:%s", mapping.field, value);
+      } else {
+        q = q.replaceAll(typedSegment.getSegment(), String.format("%s:%s", mapping.field, value));
+      }
     }
 
     if (typedSegments.isEmpty()) {
@@ -85,6 +92,9 @@ public class QuerySegmenterComponent extends SearchComponent {
     // Override q for the "query" component.
     ModifiableSolrParams modifiableSolrParams = new ModifiableSolrParams(params);
     modifiableSolrParams.set(CommonParams.Q, q);
+    if (bq != null) {
+      modifiableSolrParams.set(DisMaxParams.BQ, bq);
+    }
     rb.req.setParams(modifiableSolrParams);
   }
 
