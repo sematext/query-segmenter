@@ -24,6 +24,7 @@ public class QuerySegmenterConfig {
   private static final String INIT_ATTR_FIELD = "field";
   private static final String INIT_ATTR_LATLON = "useLatLon";
   private static final String INIT_ATTR_BQ = "useBoostQuery";
+  private static final String INIT_ATTR_TIME = "useTime";
 
   private final QuerySegmenterDefaultImpl segmenter;
 
@@ -35,6 +36,7 @@ public class QuerySegmenterConfig {
 
     boolean useBoostQuery;
 
+    boolean useTime;
   }
 
   private final Map<String, FieldMapping> mappings = new HashMap<String, FieldMapping>();
@@ -74,8 +76,9 @@ public class QuerySegmenterConfig {
 
     FieldMapping mapping = new FieldMapping();
     mapping.field = (String) values.get(INIT_ATTR_FIELD);
-    mapping.useLatLon = (Boolean) values.get(INIT_ATTR_LATLON);
+    mapping.useLatLon = values.get(INIT_ATTR_LATLON) == null ? false : (Boolean) values.get(INIT_ATTR_LATLON);
     mapping.useBoostQuery = values.get(INIT_ATTR_BQ) == null ? false : (Boolean) values.get(INIT_ATTR_BQ);
+    mapping.useTime = values.get(INIT_ATTR_TIME) == null ? false : (Boolean) values.get(INIT_ATTR_TIME);
     mappings.put(name, mapping);
   }
 

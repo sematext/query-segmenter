@@ -18,25 +18,36 @@ import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrRequestHandler;
 import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.util.AbstractSolrTestCase;
+import org.joda.time.DateTimeZone;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class QuerySegmenterComponentTest extends AbstractSolrTestCase {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class  QuerySegmenterComponentTest extends AbstractSolrTestCase {
+
+  private static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
   private static final String DISMAX_QS = "dismax_qs";
 
   @Override
   public void setUp() throws Exception {
     super.setUp();
 
-    assertU(adoc("id", "1", "project", "Solr", "type", "wiki", "title", "Solr is great!"));
-    assertU(adoc("id", "2", "project", "Tika", "type", "wiki", "title", "Solr can be used with Tika"));
-    assertU(adoc("id", "3", "project", "Lucene", "type", "wiki", "title", "Locations are fun!", "location", "45.5,-93.5"));
+    long now = System.currentTimeMillis();
+    DATETIME_FORMAT.setTimeZone(DateTimeZone.forID(getTz()).toTimeZone());
+    String today = DATETIME_FORMAT.format(new Date(now));
+    String yesterday = DATETIME_FORMAT.format(new Date(now - 1000L * 60L * 60L * 24L));
 
-    assertU(adoc("id", "11", "name", "John Smith", "suffix", "Jr", "title", "Solr is great!"));
-    assertU(adoc("id", "13", "name", "John Smith", "suffix", "Sr", "title", "Solr can be used with Tika"));
-    assertU(adoc("id", "12", "name", "Jon Doe", "suffix", "Jr"));
-    assertU(adoc("id", "14", "name", "John Doe"));
+    assertU(adoc("id", "1", "project", "Solr", "type", "wiki", "title", "Solr is great!", "updateDate", yesterday));
+    assertU(adoc("id", "2", "project", "Tika", "type", "wiki", "title", "Solr can be used with Tika", "updateDate", today));
+    assertU(adoc("id", "3", "project", "Lucene", "type", "wiki", "title", "Locations are fun!", "location", "45.5,-93.5", "updateDate", today));
+
+    assertU(adoc("id", "11", "name", "John Smith", "suffix", "Jr", "title", "Solr is great!", "updateDate", today));
+    assertU(adoc("id", "13", "name", "John Smith", "suffix", "Sr", "title", "Solr can be used with Tika", "updateDate", today));
+    assertU(adoc("id", "12", "name", "Jon Doe", "suffix", "Jr", "updateDate", today));
+    assertU(adoc("id", "14", "name", "John Doe", "updateDate", today));
 
     assertU("commit", commit());
   }
@@ -58,7 +69,7 @@ public class QuerySegmenterComponentTest extends AbstractSolrTestCase {
   }
   
   /**
-   * The query "Buffalo" should be rewritten to "location:[46,-93 TO 45,-94]" thus limiting the 
+   * The query "Buffalo" should be rewritten to "location:[46,-93 TO 45,-94]" thus limiting the
    * results to only document 3.
    */
   @Test
@@ -72,6 +83,39 @@ public class QuerySegmenterComponentTest extends AbstractSolrTestCase {
 
     assertQ(req, "//result[@name='response'][@numFound='1']",
         "//result[@name='response']/doc[1]/str[@name='id'][.='3']");
+  }
+
+  /**
+   * The query "yesterday" should be rewritten to "updateDate:[NOW/DAY-1DAY TO NOW/DAY]" thus limiting the
+   * results to only document 1.
+   */
+  @Test
+  public void test_time() {
+
+    ModifiableSolrParams params = new ModifiableSolrParams();
+    params.add(CommonParams.QT, DISMAX_QS);
+    params.add(CommonParams.Q, "yesterday");
+    //params.add(CommonParams.Q, "updateDate:[NOW/DAY-1DAY TO NOW/DAY]");
+    //params.add(CommonParams.Q, "updateDate:[2016-05-04T23:59:59Z TO NOW]");
+    //params.add("TZ", getTz());
+
+    SolrQueryRequest req = request(params);
+
+    assertQ(req, "//result[@name='response'][@numFound='1']",
+            "//result[@name='response']/doc[1]/str[@name='id'][.='1']");
+
+    params = new ModifiableSolrParams();
+    params.add(CommonParams.QT, DISMAX_QS);
+    params.add(CommonParams.Q, "today");
+
+    req = request(params);
+
+    assertQ(req, "//result[@name='response'][@numFound='6']",
+            "//result[@name='response']/doc[1]/str[@name='id'][.='2']");
+  }
+
+  private String getTz(){
+    return "UTC";// "Asia/Bangkok";
   }
 
   /**

@@ -38,6 +38,9 @@ public abstract class FileBasedSegmentDictionary extends AbstractSegmentDictiona
       BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
       String line;
       while ((line = br.readLine()) != null) {
+        if (line.length() == 0) {
+          continue;
+        }
         addLineFromFile(line);
       }
       br.close();

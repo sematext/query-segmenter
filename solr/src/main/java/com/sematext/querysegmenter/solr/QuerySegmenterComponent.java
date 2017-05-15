@@ -8,6 +8,7 @@
  */
 package com.sematext.querysegmenter.solr;
 
+import com.sematext.querysegmenter.time.TimeTypedSegment;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
@@ -111,6 +112,10 @@ public class QuerySegmenterComponent extends SearchComponent {
       double maxlat = (Double) metadata.get("maxlat");
       double maxlon = (Double) metadata.get("maxlon");
       value = String.format("[%s,%s TO %s,%s]", minlat, minlon, maxlat, maxlon);
+    } else if (mapping.useTime && typedSegment instanceof TimeTypedSegment) {
+      Map<String, ?> metadata = typedSegment.getMetadata();
+      String time = (String)metadata.get("time");
+      value = String.format("[%s]", time);
     } else {
       value = String.format("\"%s\"", typedSegment.getLabel());
     }

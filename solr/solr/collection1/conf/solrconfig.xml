@@ -1528,6 +1528,12 @@
         <bool name="useLatLon">false</bool>
         <bool name="useBoostQuery">true</bool>
       </lst>
+      <lst name="time">
+        <str name="field">updateDate</str>
+        <str name="dictionary">com.sematext.querysegmenter.time.TimeSegmentDictionaryMemImpl</str>
+        <str name="filename">./solr/collection1/conf/segmenter/time.txt</str>
+        <bool name="useTime">true</bool>
+      </lst>
     </lst>
   </searchComponent>
   
@@ -1592,6 +1598,12 @@
         <str name="filename">./solr/collection1/conf/segmenter/suffix.txt</str>
         <bool name="useLatLon">false</bool>
         <bool name="useBoostQuery">true</bool>
+      </lst>
+      <lst name="time">
+        <str name="field">updateDate</str>
+        <str name="dictionary">com.sematext.querysegmenter.time.TimeSegmentDictionaryMemImpl</str>
+        <str name="filename">./solr/collection1/conf/segmenter/time.txt</str>
+        <bool name="useTime">true</bool>
       </lst>
     </lst>
   </queryParser>
