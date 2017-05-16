@@ -8,6 +8,9 @@
  */
 package com.sematext.querysegmenter.solr;
 
+import com.sematext.querysegmenter.TypedSegment;
+import com.sematext.querysegmenter.geolocation.AreaTypedSegment;
+import com.sematext.querysegmenter.solr.QuerySegmenterConfig.FieldMapping;
 import com.sematext.querysegmenter.time.TimeTypedSegment;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.DisMaxParams;
@@ -16,14 +19,12 @@ import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.handler.component.ResponseBuilder;
 import org.apache.solr.handler.component.SearchComponent;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import com.sematext.querysegmenter.TypedSegment;
-import com.sematext.querysegmenter.geolocation.AreaTypedSegment;
-import com.sematext.querysegmenter.solr.QuerySegmenterConfig.FieldMapping;
 
 /**
  * This SearchComponent is used to retrieve segments from a user query. It must be set before the "query"
@@ -39,6 +40,10 @@ import com.sematext.querysegmenter.solr.QuerySegmenterConfig.FieldMapping;
 public class QuerySegmenterComponent extends SearchComponent {
 
   private QuerySegmenterConfig config;
+
+  private static final long ONE_WEEK = 1000L * 60 * 60 * 24 * 7;
+  private static final long FOUR_DAYS = 1000L * 60 * 60 * 24 * 4;
+  private static final DateTimeFormatter FORMATTER = ISODateTimeFormat.dateTimeNoMillis().withZoneUTC();
 
   @SuppressWarnings("rawtypes")
   @Override
@@ -114,7 +119,7 @@ public class QuerySegmenterComponent extends SearchComponent {
       value = String.format("[%s,%s TO %s,%s]", minlat, minlon, maxlat, maxlon);
     } else if (mapping.useTime && typedSegment instanceof TimeTypedSegment) {
       Map<String, ?> metadata = typedSegment.getMetadata();
-      String time = (String)metadata.get("time");
+      String time = (String) metadata.get("time");
       value = String.format("[%s]", time);
     } else {
       value = String.format("\"%s\"", typedSegment.getLabel());

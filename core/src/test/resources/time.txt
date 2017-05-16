@@ -1,9 +1,9 @@
 yesterday|NOW/DAY-1DAY TO NOW/DAY
 today|NOW/DAY TO NOW/DAY+1DAY
 tomorrow|NOW/DAY+1DAY TO NOW/DAY+2DAYS
-last week|NOW/WEEK-1WEEK TO NOW/WEEK
-this week|NOW/WEEK TO NOW/WEEK+1WEEK
-next week|NOW/WEEK+1WEEK TO NOW/WEEK+2WEEKS
+last week|ignore
+this week|ignore
+next week|ignore
 last month|NOW/MONTH-1MONTH TO NOW/MONTH
 this month|NOW/MONTH TO NOW/MONTH+1MONTH
 next month|NOW/MONTH+1MONTH TO NOW/MONTH+2MONTHS
@@ -11,13 +11,13 @@ last year|NOW/YEAR-1YEAR TO NOW/YEAR
 this year|NOW/YEAR TO NOW/YEAR+1YEAR
 next year|NOW/YEAR+1YEAR TO NOW/YEAR+2YEARS
 
-last Monday|NOW-1DAY/WEEK TO NOW-1DAY/WEEK+1DAY
-last Tuesday|NOW-2DAYS/WEEK TO NOW-2DAYS/WEEK+2DAYS
-last Wednesday|NOW-3DAYS/WEEK TO NOW-3DAYS/WEEK+3DAYS
-last Thursday|NOW-4DAYS/WEEK TO NOW-4DAYS/WEEK+4DAYS
-last Friday|NOW-5DAYS/WEEK TO NOW-5DAYS/WEEK+5DAYS
-last Saturday|NOW-6DAYS/WEEK TO NOW-6DAYS/WEEK+6DAYS
-last Sunday|NOW-7DAYS/WEEK TO NOW-7DAYS/WEEK+7DAYS
+last Monday|ignore
+last Tuesday|ignore
+last Wednesday|ignore
+last Thursday|ignore
+last Friday|ignore
+last Saturday|ignore
+last Sunday|ignore
 
 1 hour ago|NOW-1HOUR TO NOW
 2 hours ago|NOW-2HOURS TO NOW-1HOUR
