@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.sematext.querysegmenter</groupId>
         <artifactId>st-QuerySegmenter-parent</artifactId>
-        <version>1.3.7.1.0</version>
+        <version>1.3.7.1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>st-QuerySegmenter-core</artifactId>
