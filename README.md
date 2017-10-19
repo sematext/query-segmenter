@@ -21,7 +21,7 @@ The `QuerySegmenter` core library is used to find typed segments within a user q
 - [Contact](#contact)
   
 ## Solr Version
-6.5.1
+7.1.0
 
 ## Build
 You need maven and JDK 8:
@@ -31,6 +31,9 @@ $ mvn clean package
 ```
 
 ## Release Notes
+
+#### 1.3.7.1.0 (2017-10-19)
+- Support for Solr 7.1.0
 
 #### 1.3.6.5.1 (2017-05-09)
 - Support for Solr 6.5.1

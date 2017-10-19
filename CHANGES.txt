@@ -1,4 +1,6 @@
 In trunk
+  - 2017-10-19: upgrade to Solr 7.1.0
+In trunk
   - 2017-04-18: upgrade to Solr 6.5.0
 In version 1.3.6.3.0:
   - 2016-12-09: upgrade to Solr 6.3.0

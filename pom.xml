@@ -4,7 +4,7 @@
   <groupId>com.sematext.querysegmenter</groupId>
   <artifactId>st-QuerySegmenter-parent</artifactId>
   <name>Query Segmenter</name>
-  <version>1.3.6.5.2-SNAPSHOT</version>
+  <version>1.3.7.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>https://github.com/sematext/query-segmenter</url>
   <description>Library to find typed segments within a user query</description>
@@ -34,7 +34,6 @@
     <connection>scm:git:git@github.com:sematext/query-segmenter.git</connection>
     <developerConnection>scm:git:git@github.com:sematext/query-segmenter.git</developerConnection>
     <url>https://github.com/sematext/query-segmenter</url>
-    <tag>st-QuerySegmenter-parent-1.3.6.5.1</tag>
   </scm>
 
   <organization>
@@ -56,7 +55,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.2</version>
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>
@@ -71,7 +70,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -84,7 +83,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>2.10.4</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -170,19 +169,19 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.7.22</version>
+      <version>2.8.47</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>1.7.0RC2</version>
+      <version>1.7.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
-      <version>1.7.0RC2</version>
+      <version>1.7.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

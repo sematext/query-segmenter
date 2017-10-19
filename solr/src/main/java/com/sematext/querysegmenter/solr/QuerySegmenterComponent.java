@@ -58,16 +58,6 @@ public class QuerySegmenterComponent extends SearchComponent {
   }
 
   @Override
-  public String getSource() {
-    return null;
-  }
-
-  @Override
-  public String getVersion() {
-    return null;
-  }
-
-  @Override
   public void prepare(ResponseBuilder rb) throws IOException {
 
     SolrParams params = rb.req.getParams();

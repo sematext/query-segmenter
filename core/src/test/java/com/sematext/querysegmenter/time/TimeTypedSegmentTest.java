@@ -15,10 +15,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(System.class)
+@PrepareForTest({TimeTypedSegment.class})
 public class TimeTypedSegmentTest {
 
   @Test
@@ -45,6 +44,8 @@ public class TimeTypedSegmentTest {
     PowerMockito.mockStatic(System.class);
 
     // today 2017-05-16
+    PowerMockito.when(System.currentTimeMillis()).thenReturn(1494945394482L);
+    PowerMockito.when(System.currentTimeMillis()).thenReturn(1494945394482L);
     PowerMockito.when(System.currentTimeMillis()).thenReturn(1494945394482L);
 
     TimeTypedSegment segment = new TimeTypedSegment(csv);
